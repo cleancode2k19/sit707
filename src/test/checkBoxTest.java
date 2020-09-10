@@ -1,0 +1,54 @@
+package test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+//import week4.randomDataTest;
+
+
+public class checkBoxTest {
+	WebDriver driver;
+	
+	@Before
+	public void setup() {
+		System.setProperty("webdriver.chrome.driver", "/Users/bhanupriyajena/Downloads/chromedriver");
+		WebDriver driver = new ChromeDriver();
+		driver.navigate().to("http://www.bunnings.com.au/register");
+	}
+	
+	@After
+	public void shutDown() {
+		driver.close();
+	}
+	
+	@Test
+	public void shouldBeAbleToSubmitForm() {
+		driver.findElement(By.id("body_1_RegistrationDetailsCtrl_firstname")).sendKeys("First Name");
+		driver.findElement(By.id("body_1_RegistrationDetailsCtrl_lastname")).sendKeys("Last Name");
+		driver.findElement(By.id("body_1_RegistrationDetailsCtrl_postcode")).sendKeys("1111");
+		driver.findElement(By.id("body_1_RegistrationDetailsCtrl_email")).sendKeys("test@email.com");
+		driver.findElement(By.id("body_1_PasswordCtrl_password")).sendKeys("password12");
+		driver.findElement(By.id("body_1_PasswordCtrl_confirmpassword")).sendKeys("password12");
+		
+		WebElement termsCheckBox = driver.findElement(By.id("body_1_tnc"));
+		System.out.println("Terms and conditions checkbox enabled"+termsCheckBox.isEnabled());
+		
+		Boolean isSlectedTCBox = termsCheckBox.isSelected();
+		System.out.println("Terms and condition check selected"+termsCheckBox.isSelected());
+		if(isSlectedTCBox==false) {
+			termsCheckBox.click();
+			
+		}
+		
+		WebElement promotionCheckBox = driver.findElement(By.id("body_1_promotion"));
+		System.out.println("promotion checkbox enabled"+promotionCheckBox.isEnabled());
+		
+		driver.findElement(By.id("RegisterButton")).click();
+		Assert.assertTrue(driver.getCurrentUrl().contains("register"));
+	}
+}
